@@ -15,6 +15,7 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.0");
   
   api.use([
+    'react',
     'cosmos:browserify@0.9.3',
     'tmeasday:publish-counts@0.7.3'
   ]);
