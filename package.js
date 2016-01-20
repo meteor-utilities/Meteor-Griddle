@@ -15,21 +15,21 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.0");
   
   api.use([
-    'react',
-    'cosmos:browserify'
+    'cosmos:browserify@0.9.3',
+    'tmeasday:publish-counts@0.7.3'
   ]);
   
   api.addFiles([
-    'package.browserify.js',
-    'package.browserify.options.json'
+    'package.browserify.js'
   ], ['client', 'server']);
+
+  api.addAssets([
+    'package.browserify.options.json'
+  ], ['server']);
 
   api.addFiles([
     'MeteorGriddle.jsx'
   ], 'client');
-
-  api.addFiles([
-  ], ['server']);
 
   api.export([
     'MeteorGriddle'
