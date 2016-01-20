@@ -1,0 +1,1 @@
+A smart Meteor wrapper for the Griddle React component
