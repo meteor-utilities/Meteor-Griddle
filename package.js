@@ -5,25 +5,14 @@ Package.describe({
   git: "https://github.com/meteor-utilities/meteor-griddle.git"
 });
 
-Npm.depends({
-  "griddle-react": "0.3.1",
-  "externalify": "0.1.0"
-});
-
 Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.0");
   
   api.use([
-    'react@0.14.3',
-    'cosmos:browserify@0.9.3',
-    'tmeasday:publish-counts@0.7.3'
+    'tmeasday:publish-counts@0.7.3',
+    'react'
   ]);
-
-  api.addFiles([
-    'package.browserify.js',
-    'package.browserify.options.json'
-  ], ['client', 'server']);
 
   api.addFiles([
     'MeteorGriddle.jsx'
