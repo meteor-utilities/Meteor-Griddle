@@ -30,7 +30,7 @@ Package.onUse(function(api) {
   ], 'client');
 
   api.export([
-    'MeteorGriddle'
+    'MeteorGriddle', 'Griddle'
   ]);
 
 });
