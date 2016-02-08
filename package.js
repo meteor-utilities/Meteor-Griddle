@@ -11,7 +11,8 @@ Package.onUse(function(api) {
   
   api.use([
     'tmeasday:publish-counts@0.7.3',
-    'react'
+    'react-meteor-data',
+    'jsx'
   ]);
 
   api.addFiles([

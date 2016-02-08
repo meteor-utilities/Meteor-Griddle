@@ -1,3 +1,6 @@
+import React from "react";
+import Griddle from "griddle-react";
+
 MeteorGriddle = React.createClass({
 
   propTypes: {
