@@ -1,6 +1,9 @@
 import React from "react";
 import Griddle from "griddle-react";
 
+import {checkNpmVersions} from 'meteor/check-npm-versions';
+checkNpmVersions({'griddle-react': '0.3.x'});
+
 MeteorGriddle = React.createClass({
 
   propTypes: {
