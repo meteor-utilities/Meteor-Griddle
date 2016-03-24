@@ -8,7 +8,7 @@ Package.describe({
 Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.0");
-  
+
   Npm.depends({
     "griddle-react": "0.3.1"
   });
@@ -17,7 +17,7 @@ Package.onUse(function(api) {
     'tmeasday:publish-counts@0.7.3',
     'react-meteor-data',
     'jsx',
-    'check-npm-versions'
+    'tmeasday:check-npm-versions'
   ]);
 
   api.addFiles([
