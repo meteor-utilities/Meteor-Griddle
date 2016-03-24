@@ -4,11 +4,16 @@ A smart Meteor wrapper for the [Griddle](http://griddlegriddle.github.io/Griddle
 
 ### Installation
 
-`meteor add utilities:meteor-griddle`
+- `meteor add utilities:meteor-griddle`
+- `npm install --save griddle-react`
 
 ### Usage
 
 #### React Component
+
+```
+import { MeteorGriddle } from 'meteor/utilities:meteor-griddle';
+```
 
 The `<MeteorGriddle/>` React component takes the same options as `<Griddle/>`, plus a couple extra ones:
 
@@ -34,7 +39,7 @@ You'll usually want to pass along some of Griddle's [own options](http://griddle
 
 #### Publication
 
-To use Griddle, you need to define a publication in your own codebase. That publication takes two `query` and `options` arguments from the client. 
+To use Griddle, you need to define a publication in your own codebase. That publication takes two `query` and `options` arguments from the client.
 
 ##### Example
 
@@ -55,6 +60,6 @@ To use Griddle, you need to define a publication in your own codebase. That publ
 
 ##### Notes
 
-- The publication should publish a count of matching results using the [Publish Counts](https://github.com/percolatestudio/publish-counts) package. 
-- Note that [an issue with the Publish Counts package](https://github.com/percolatestudio/publish-counts/issues/58) prevents you from reusing the same cursor. 
+- The publication should publish a count of matching results using the [Publish Counts](https://github.com/percolatestudio/publish-counts) package.
+- Note that [an issue with the Publish Counts package](https://github.com/percolatestudio/publish-counts/issues/58) prevents you from reusing the same cursor.
 - You're trusted to make your own security checks on the `query` and `options` arguments.
