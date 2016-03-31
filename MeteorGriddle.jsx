@@ -1,8 +1,8 @@
 import React from "react";
-import Griddle from "griddle-react";
+import {checkNpmVersions} from 'meteor/tmeasday:check-npm-versions';
+checkNpmVersions({'griddle-react': '0.4.x'});
 
-import {checkNpmVersions} from 'meteor/check-npm-versions';
-checkNpmVersions({'griddle-react': '0.3.x'});
+const Griddle = require('griddle-react');
 
 MeteorGriddle = React.createClass({
 
@@ -15,10 +15,10 @@ MeteorGriddle = React.createClass({
   },
 
   mixins: [ReactMeteorData],
-  
+
   getInitialState() {
 
-    // 
+    //
     return {
       currentPage: 0,
       maxPages: 0,
@@ -59,12 +59,12 @@ MeteorGriddle = React.createClass({
         return filterItem;
       });
       query = {$or: orArray};
-      
+
     }
 
     // sorting
     options.sort[this.state.externalSortColumn] = this.state.externalSortAscending ? 1 : -1;
-    
+
     // skipping
     var skip = this.state.currentPage * this.state.externalResultsPerPage;
 
@@ -117,9 +117,9 @@ MeteorGriddle = React.createClass({
         externalSetFilter={this.setFilter}
         externalSetPageSize={this.setPageSize}
         externalMaxPage={maxPages}
-        externalCurrentPage={this.state.currentPage} 
-        resultsPerPage={this.state.externalResultsPerPage} 
-        externalSortColumn={this.state.externalSortColumn} 
+        externalCurrentPage={this.state.currentPage}
+        resultsPerPage={this.state.externalResultsPerPage}
+        externalSortColumn={this.state.externalSortColumn}
         externalSortAscending={this.state.externalSortAscending}
       />
     )
