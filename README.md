@@ -37,6 +37,20 @@ The `<MeteorGriddle/>` React component takes the same options as `<Griddle/>`, p
 
 You'll usually want to pass along some of Griddle's [own options](http://griddlegriddle.github.io/Griddle/properties.html), too.
 
+##### Loading Message Customization
+
+If you're interested in displaying a custom table loading indicator/message, use the Griddle supported `externalLoadingComponent` property (which accepts a React Component):
+
+```jsx
+  <MeteorGriddle
+    publication="adminUsers"
+    collection={Meteor.users}
+    ...
+    externalLoadingComponent={UsersLoading}
+  />
+```
+**Note:** Griddle uses the `externalIsLoading` (boolean) property to decide if the loading component should be shown or not. MeteorGriddle takes care of setting this property internally based on the subscription ready state. You do not need to pass this property in (and if you do it will be ignored).
+
 #### Publication
 
 To use Griddle, you need to define a publication in your own codebase. That publication takes two `query` and `options` arguments from the client.

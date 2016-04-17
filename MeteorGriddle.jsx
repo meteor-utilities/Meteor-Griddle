@@ -68,13 +68,18 @@ MeteorGriddle = React.createClass({
     var skip = this.state.currentPage * this.state.externalResultsPerPage;
 
     // we extend options with skip before passing them to publication
-    Meteor.subscribe(this.props.publication, query, _.extend({skip: skip}, options));
+    const pubHandle = Meteor.subscribe(
+      this.props.publication,
+      query,
+      _.extend({skip: skip}, options)
+    );
 
     // create the cursor
     var results = this.props.collection.find(query, options).fetch();
 
     // return data
     return {
+      loading: !pubHandle.ready(),
       results: results,
       matchingResults: matchingResults
     }
@@ -105,9 +110,15 @@ MeteorGriddle = React.createClass({
     // figure out how many pages we have based on the number of total results matching the cursor
     var maxPages = Math.round(this.data.matchingResults/this.state.externalResultsPerPage);
 
+    // The Griddle externalIsLoading property is managed internally to line
+    // up with the subscription ready state, so we're removing this property
+    // if it's passed in.
+    const allProps = this.props;
+    delete allProps.externalIsLoading;
+
     return (
       <Griddle
-        {...this.props}
+        {...allProps}
         tableClassName="table"
         results={this.data.results}
         columnMetadata={this.props.columnMetadata}
@@ -120,6 +131,7 @@ MeteorGriddle = React.createClass({
         resultsPerPage={this.state.externalResultsPerPage}
         externalSortColumn={this.state.externalSortColumn}
         externalSortAscending={this.state.externalSortAscending}
+        externalIsLoading={this.data.loading}
       />
     )
   }
