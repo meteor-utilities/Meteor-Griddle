@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 import {checkNpmVersions} from 'meteor/tmeasday:check-npm-versions';
-checkNpmVersions({'griddle-react': '0.4.x'});
+checkNpmVersions({'griddle-react': '>=0.4.x'});
 
 const Griddle = require('griddle-react');
 
@@ -18,7 +18,6 @@ MeteorGriddle = React.createClass({
 
   getInitialState() {
 
-    //
     return {
       currentPage: 0,
       maxPages: 0,

@@ -1,13 +1,13 @@
 Package.describe({
   name: "utilities:meteor-griddle",
   summary: "A smart Meteor wrapper for the Griddle React component",
-  version: "0.1.0",
+  version: "0.2.0",
   git: "https://github.com/meteor-utilities/meteor-griddle.git"
 });
 
 Package.onUse(function(api) {
 
-  api.versionsFrom("METEOR@1.0");
+  api.versionsFrom('METEOR@1.3');
 
   api.use([
     'tmeasday:publish-counts@0.7.3',
