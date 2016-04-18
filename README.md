@@ -2,6 +2,8 @@
 
 A smart Meteor wrapper for the [Griddle](http://griddlegriddle.github.io/Griddle/) React component
 
+**Note:** This is the Meteor 1.2 branch. For Meteor >= 1.3 please see master.
+
 ### Installation
 
 `meteor add utilities:meteor-griddle`
