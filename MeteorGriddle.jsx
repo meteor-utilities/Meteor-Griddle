@@ -1,6 +1,9 @@
 import React from 'react';
 import {checkNpmVersions} from 'meteor/tmeasday:check-npm-versions';
-checkNpmVersions({'griddle-react': '>=0.4.x'});
+checkNpmVersions({
+  'griddle-react': '0.5.x',
+  'react-addons-pure-render-mixin': '15.x',
+}, 'utilities:meteor-griddle');
 
 const Griddle = require('griddle-react');
 
