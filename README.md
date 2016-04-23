@@ -83,7 +83,7 @@ To use Griddle, you need to define a publication in your own codebase. That publ
 
 The [meteorhacks:subs-manager](https://atmospherejs.com/meteorhacks/subs-manager) package can be used with `MeteorGriddle` to help cache subscriptions. Simply create a new SubsManager instance then pass it in via the `subsManager` property. For example:
 
-```
+```jsx
 const subsManager = new SubsManager();
 const ProductList = () => (
   <div className="products">
@@ -95,4 +95,3 @@ const ProductList = () => (
   </div>
 );
 ```
-
