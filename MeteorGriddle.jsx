@@ -13,7 +13,8 @@ MeteorGriddle = React.createClass({
     publication: React.PropTypes.string, // the publication that will provide the data
     collection: React.PropTypes.object, // the collection to display
     matchingResultsCount: React.PropTypes.string, // the name of the matching results counter
-    filteredFields: React.PropTypes.array // an array of fields to search through when filtering
+    filteredFields: React.PropTypes.array, // an array of fields to search through when filtering
+    subsManager: React.PropTypes.object,
     // plus regular Griddle props
   },
 
@@ -65,17 +66,27 @@ MeteorGriddle = React.createClass({
     }
 
     // sorting
-    options.sort[this.state.externalSortColumn] = this.state.externalSortAscending ? 1 : -1;
+    options.sort[this.state.externalSortColumn] =
+      this.state.externalSortAscending ? 1 : -1;
 
     // skipping
     var skip = this.state.currentPage * this.state.externalResultsPerPage;
 
     // we extend options with skip before passing them to publication
-    const pubHandle = Meteor.subscribe(
-      this.props.publication,
-      query,
-      _.extend({skip: skip}, options)
-    );
+    let pubHandle;
+    if (this.props.subsManager) {
+      pubHandle = this.props.subsManager.subscribe(
+        this.props.publication,
+        query,
+        _.extend({skip: skip}, options)
+      );
+    } else {
+      pubHandle = Meteor.subscribe(
+        this.props.publication,
+        query,
+        _.extend({skip: skip}, options)
+      );
+    }
 
     // create the cursor
     var results = this.props.collection.find(query, options).fetch();
@@ -105,13 +116,15 @@ MeteorGriddle = React.createClass({
 
   //this method handles determining the page size
   setPageSize(size) {
-    this.setState({externalResultsPerPage: size});
+    this.setState({ externalResultsPerPage: size });
   },
 
   render() {
 
-    // figure out how many pages we have based on the number of total results matching the cursor
-    var maxPages = Math.round(this.data.matchingResults/this.state.externalResultsPerPage);
+    // figure out how many pages we have based on the number of total results
+    // matching the cursor
+    var maxPages =
+      Math.round(this.data.matchingResults/this.state.externalResultsPerPage);
 
     // The Griddle externalIsLoading property is managed internally to line
     // up with the subscription ready state, so we're removing this property
@@ -137,6 +150,7 @@ MeteorGriddle = React.createClass({
         externalIsLoading={this.data.loading}
       />
     )
+
   }
 
 });
