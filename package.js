@@ -13,7 +13,8 @@ Package.onUse(function(api) {
     'tmeasday:publish-counts@0.7.3',
     'react-meteor-data@0.2.9',
     'jsx@0.2.4',
-    'tmeasday:check-npm-versions@0.2.0'
+    'tmeasday:check-npm-versions@0.2.0',
+    'underscore'
   ]);
 
   api.addFiles([

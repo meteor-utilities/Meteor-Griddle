@@ -1,10 +1,10 @@
 import React from 'react';
-import {checkNpmVersions} from 'meteor/tmeasday:check-npm-versions';
+import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
+import { _ } from 'meteor/underscore';
 checkNpmVersions({
   'griddle-react': '0.5.x',
   'react-addons-pure-render-mixin': '15.x',
 }, 'utilities:meteor-griddle');
-
 const Griddle = require('griddle-react');
 
 MeteorGriddle = React.createClass({
@@ -20,6 +20,14 @@ MeteorGriddle = React.createClass({
 
   mixins: [ReactMeteorData],
 
+  getDefaultProps() {
+    return {
+      useExternal: false,
+      externalFilterDebounceWait: 300,
+      externalResultsPerPage: 10,
+    };
+  },
+
   getInitialState() {
 
     return {
@@ -28,75 +36,69 @@ MeteorGriddle = React.createClass({
       externalResultsPerPage: this.props.externalResultsPerPage,
       externalSortColumn: this.props.externalSortColumn,
       externalSortAscending: this.props.externalSortAscending,
-      filter: null
+      query: {},
     };
 
   },
 
+  componentWillMount() {
+    this.applyQuery = _.debounce((query) => {
+      this.setState({ query });
+    }, this.props.externalFilterDebounceWait);
+  },
+
   getMeteorData() {
 
-    var query = {};
-
-    // get a count of the number of items matching the current filter
-    // if no filter is set it will return the total number of items in the collection
+    // Get a count of the number of items matching the current filter.
+    // If no filter is set it will return the total number of items in the
+    // collection.
     var matchingResults = Counts.get(this.props.matchingResultsCount);
 
-    var options = {
-      limit: this.state.externalResultsPerPage,
-      sort: {},
-    };
-
-    // filtering
-    if (this.state.filter) {
-
-      // if filteredFields are not defined, default to using columns
-      var filteredFields = this.props.filteredFields || this.props.columns;
-
-      // if necessary, limit the cursor to number of matching results to avoid displaying results from other publications
-      options.limit = _.min([options.limit, matchingResults]);
-
-      // build array for filtering using regex
-      var orArray = filteredFields.map((field) => {
-        var filterItem = {};
-        filterItem[field] = {$regex: this.state.filter, $options: 'i'};
-        return filterItem;
-      });
-      query = {$or: orArray};
-
+    const options = {};
+    let skip;
+    if (this.props.useExternal) {
+      options.limit = this.state.externalResultsPerPage;
+      if (this.state.query) {
+        // If necessary, limit the cursor to number of matching results to avoid
+        // displaying results from other publications
+        options.limit = _.min([options.limit, matchingResults]);
+      }
+      options.sort = {
+        [this.state.externalSortColumn]:
+          (this.state.externalSortAscending ? 1 : -1)
+      };
+      skip = this.state.currentPage * this.state.externalResultsPerPage;
     }
 
-    // sorting
-    options.sort[this.state.externalSortColumn] =
-      this.state.externalSortAscending ? 1 : -1;
-
-    // skipping
-    var skip = this.state.currentPage * this.state.externalResultsPerPage;
-
-    // we extend options with skip before passing them to publication
     let pubHandle;
     if (this.props.subsManager) {
       pubHandle = this.props.subsManager.subscribe(
         this.props.publication,
-        query,
+        this.state.query,
         _.extend({skip: skip}, options)
       );
     } else {
       pubHandle = Meteor.subscribe(
         this.props.publication,
-        query,
+        this.state.query,
         _.extend({skip: skip}, options)
       );
     }
 
-    // create the cursor
-    var results = this.props.collection.find(query, options).fetch();
+    const results =
+      this.props.collection.find(this.state.query, options).fetch();
 
-    // return data
     return {
       loading: !pubHandle.ready(),
       results: results,
       matchingResults: matchingResults
     }
+  },
+
+  resetQuery() {
+    this.setState({
+      query: {},
+    });
   },
 
   //what page is currently viewed
@@ -109,9 +111,18 @@ MeteorGriddle = React.createClass({
     this.setState({externalSortColumn: sort, externalSortAscending: sortAscending});
   },
 
-  //this method handles the filtering of the data
   setFilter(filter) {
-    this.setState({filter: filter});
+    if (filter) {
+      const filteredFields = this.props.filteredFields || this.props.columns;
+      const orArray = filteredFields.map((field) => {
+        const filterItem = {};
+        filterItem[field] = {$regex: filter, $options: 'i'};
+        return filterItem;
+      });
+      this.applyQuery({ $or: orArray });
+    } else {
+      this.resetQuery();
+    }
   },
 
   //this method handles determining the page size
