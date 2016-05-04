@@ -24,6 +24,7 @@ The `<MeteorGriddle/>` React component takes the same options as `<Griddle/>`, p
 - `matchingResultsCount`: the name of the matching results counter
 - `filteredFields`: an array of fields to search through when filtering
 - `subsManager`: An optional [meteorhacks:subs-manager](https://atmospherejs.com/meteorhacks/subs-manager) instance
+- `externalFilterDebounceWait`: When filtering data loaded from an external source, this time (in milliseconds) will be used to debounce the filter (to prevent results from refreshing on each keystroke). Default time is set to 300 ms. This property will only be used if the `useExternal` component property is set to `true`. For now the filter debounce option is limited to external data sources only.
 
 #### Example
 
@@ -33,6 +34,7 @@ The `<MeteorGriddle/>` React component takes the same options as `<Griddle/>`, p
     collection={Meteor.users}
     matchingResultsCount="matching-users"
     filteredFields={["email", "username", "emails.address", "services.meteor-developer.username"]}
+    showFilter
   />
 ```
 
@@ -51,6 +53,43 @@ If you're interested in displaying a custom table loading indicator/message, use
   />
 ```
 **Note:** Griddle uses the `externalIsLoading` (boolean) property to decide if the loading component should be shown or not. MeteorGriddle takes care of setting this property internally based on the subscription ready state. You do not need to pass this property in (and if you do it will be ignored).
+
+#### Filtering
+
+To show and use the Griddle filtering option, you must pass in either a `filteredFields` or `columns` property, as well as a `showFilter` property that's set to `true`.
+
+```jsx
+  <MeteorGriddle
+    publication="gizmos.all"
+    collection={gizmos}
+    matchingResultsCount="gizmos-count"
+    filteredFields={['name', 'description', 'color']}
+    showFilter
+  />
+```          
+
+#### External Options
+
+To use any of Griddle's `external*` properties, you must pass in `useExternal` (set to `true`). `useExternal` is set to `false` by default. 
+
+```jsx
+  // Will ignore `externalResultsPerPage`
+  <MeteorGriddle
+    publication="gizmos.all"
+    collection={gizmos}
+    matchingResultsCount="gizmos-count"
+    externalResultsPerPage={10}
+  />
+  
+  // Will use `externalResultsPerPage`
+  <MeteorGriddle
+    publication="gizmos.all"
+    collection={gizmos}
+    matchingResultsCount="gizmos-count"
+    externalResultsPerPage={10}
+    useExternal
+  />  
+```  
 
 ### Publication
 
@@ -95,3 +134,11 @@ const ProductList = () => (
   </div>
 );
 ```
+
+## History
+
+### 1.2.0
+
+- Clarified docs mentioning must have filtered fields or columns defined to use filter.
+- Adjusted so `useExternal` must be set to use `external*` properties. Set to `false` by default.
+- Added `externalFilterDebounceWait` property for controlling external data source filter debouncing.
