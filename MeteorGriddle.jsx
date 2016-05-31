@@ -1,11 +1,12 @@
 import React from 'react';
 import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 import { _ } from 'meteor/underscore';
+import Griddle from 'griddle-react';
+
 checkNpmVersions({
   'griddle-react': '0.5.x',
   'react-addons-pure-render-mixin': '15.x',
 }, 'utilities:meteor-griddle');
-const Griddle = require('griddle-react');
 
 MeteorGriddle = React.createClass({
 
@@ -58,8 +59,8 @@ MeteorGriddle = React.createClass({
     let skip;
     if (this.props.useExternal) {
       options.limit = this.state.externalResultsPerPage;
-      if (this.state.query) {
-        // If necessary, limit the cursor to number of matching results to avoid
+      if (!_.isEmpty(this.state.query) && !!matchingResults) {
+        // if necessary, limit the cursor to number of matching results to avoid
         // displaying results from other publications
         options.limit = _.min([options.limit, matchingResults]);
       }
@@ -71,6 +72,12 @@ MeteorGriddle = React.createClass({
     }
 
     let pubHandle;
+    console.log(matchingResults)
+    console.log(this)
+    console.log("// options")
+    console.log(options)
+
+
     if (this.props.subsManager) {
       pubHandle = this.props.subsManager.subscribe(
         this.props.publication,
