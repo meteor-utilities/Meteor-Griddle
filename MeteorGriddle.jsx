@@ -72,11 +72,6 @@ MeteorGriddle = React.createClass({
     }
 
     let pubHandle;
-    console.log(matchingResults)
-    console.log(this)
-    console.log("// options")
-    console.log(options)
-
 
     if (this.props.subsManager) {
       pubHandle = this.props.subsManager.subscribe(

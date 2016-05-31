@@ -46,6 +46,6 @@ tmeasday:publish-counts@0.7.3
 tracker@1.0.13
 ui@1.0.11
 underscore@1.0.8
-utilities:meteor-griddle@1.1.0
+utilities:meteor-griddle@1.2.1
 webapp@1.2.8
 webapp-hashing@1.0.9
