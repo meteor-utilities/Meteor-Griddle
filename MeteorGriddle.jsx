@@ -137,7 +137,7 @@ MeteorGriddle = React.createClass({
     // figure out how many pages we have based on the number of total results
     // matching the cursor
     var maxPages =
-      Math.round(this.data.matchingResults/this.state.externalResultsPerPage);
+      Math.ceil(this.data.matchingResults/this.state.externalResultsPerPage);
 
     // The Griddle externalIsLoading property is managed internally to line
     // up with the subscription ready state, so we're removing this property
