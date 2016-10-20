@@ -16,7 +16,7 @@ MeteorGriddle = React.createClass({
     matchingResultsCount: React.PropTypes.string, // the name of the matching results counter
     filteredFields: React.PropTypes.array, // an array of fields to search through when filtering
     subsManager: React.PropTypes.object,
-    transformResults: React.PropTypes.function,
+    transformResult: React.PropTypes.func, // a function to transform one entry in the list
     // plus regular Griddle props
   },
 
@@ -27,7 +27,7 @@ MeteorGriddle = React.createClass({
       useExternal: false,
       externalFilterDebounceWait: 300,
       externalResultsPerPage: 10,
-      transformResults: (results) => results
+      transformResult: (entry) => entry // identity
     };
   },
 
@@ -89,9 +89,9 @@ MeteorGriddle = React.createClass({
       );
     }
 
-    const results = this.transformResults(
-        this.props.collection.find(this.state.query, options).fetch()
-      );
+    const results =
+      this.props.collection.find(this.state.query, options).map(this.props.transformResult);
+
 
     return {
       loading: !pubHandle.ready(),
